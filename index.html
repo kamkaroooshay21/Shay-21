@@ -1,69 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shay-21 Local Host Mirror</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Shay-21 API Explorer</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
-      <header class="topbar">
+    <header class="site-header">
+      <div class="container header-inner">
         <div>
-          <p class="eyebrow">Repository: Shay-21</p>
-          <h1>Local Host Mirror</h1>
+          <h1>Shay-21 API Explorer</h1>
+          <p class="muted">Mirror & explorer for the backend at <span id="backend-display">http://192.168.60.103:8080/</span></p>
         </div>
-        <button id="load-root" class="primary-btn">Load API</button>
-      </header>
+        <div class="header-actions">
+          <input id="backend-url" type="text" value="http://192.168.60.103:8080/" />
+          <button id="refresh-root" class="primary-btn">Refresh & Discover</button>
+          <a class="tiny-link" href="#/about">About</a>
+        </div>
+      </div>
+    </header>
 
-      <main class="dashboard">
-        <section class="panel status-panel">
-          <h2>Backend Status</h2>
-          <div class="status-row">
-            <span class="label">URL</span>
-            <input id="backend-url" type="text" value="http://192.168.60.103:8080/" />
-          </div>
-          <div class="status-row">
-            <span class="label">Status</span>
-            <span id="status-badge" class="status-badge idle">Waiting</span>
-          </div>
-          <div class="status-row">
-            <span class="label">Response time</span>
-            <span id="response-time">--</span>
-          </div>
-        </section>
+    <main class="container app-grid">
+      <aside class="sidebar panel">
+        <h2>Endpoints</h2>
+        <div id="endpoints-list" class="endpoints-list">
+          <!-- quick actions + discovered endpoints go here -->
+        </div>
+        <div style="margin-top:12px;">
+          <button id="root-open" class="secondary-btn">Open Root</button>
+          <button id="clear-cache" class="secondary-btn">Clear</button>
+        </div>
+      </aside>
 
-        <section class="panel">
-          <h2>Quick Actions</h2>
-          <div class="action-grid">
-            <button class="secondary-btn" data-method="GET" data-endpoint="/">GET /</button>
-            <button class="secondary-btn" data-method="GET" data-endpoint="/api">GET /api</button>
-            <button class="secondary-btn" data-method="GET" data-endpoint="/health">GET /health</button>
-            <button class="secondary-btn" data-method="GET" data-endpoint="/status">GET /status</button>
-          </div>
-        </section>
+      <section class="panel content" id="content">
+        <!-- dynamic views rendered here -->
+        <div id="home-view">
+          <h2>Welcome</h2>
+          <p>Auto-fetching backend root and attempting to discover API routes. Use the endpoints on the left to explore.</p>
+          <pre id="root-response" class="debug-output">(root response will appear here)</pre>
+        </div>
 
-        <section class="panel request-panel">
-          <h2>Custom Request</h2>
-          <div class="request-controls">
-            <select id="http-method">
-              <option value="GET">GET</option>
-              <option value="POST">POST</option>
-              <option value="PUT">PUT</option>
-              <option value="DELETE">DELETE</option>
-            </select>
-            <input id="endpoint-path" type="text" placeholder="/your-endpoint" value="/" />
+        <template id="list-template">
+          <div>
+            <div class="list-header">
+              <h2 id="list-title"></h2>
+              <div>
+                <button id="create-item" class="primary-btn">Create</button>
+                <button id="back-home" class="secondary-btn">Back</button>
+              </div>
+            </div>
+            <div id="list-controls"></div>
+            <div id="list-table-wrap"></div>
+            <pre id="list-raw" class="debug-output"></pre>
           </div>
-          <textarea id="request-body" placeholder='{"example": true}'></textarea>
-          <button id="send-request" class="primary-btn wide">Send Request</button>
-        </section>
-      </main>
+        </template>
 
-      <section class="panel response-panel">
-        <h2>Response</h2>
-        <pre id="response-output">Waiting for data...</pre>
+        <template id="detail-template">
+          <div>
+            <div class="list-header">
+              <h2 id="detail-title"></h2>
+              <div>
+                <button id="edit-item" class="primary-btn">Edit</button>
+                <button id="delete-item" class="secondary-btn">Delete</button>
+                <button id="detail-back" class="secondary-btn">Back</button>
+              </div>
+            </div>
+            <div id="detail-body"></div>
+            <pre id="detail-raw" class="debug-output"></pre>
+          </div>
+        </template>
+
+        <template id="form-template">
+          <div>
+            <h3 id="form-title"></h3>
+            <form id="dynamic-form"></form>
+            <div style="margin-top:12px;"><button id="submit-form" class="primary-btn">Submit</button> <button id="cancel-form" class="secondary-btn">Cancel</button></div>
+            <pre id="form-raw" class="debug-output"></pre>
+          </div>
+        </template>
+
+        <div id="about-view" style="display:none">
+          <h2>About</h2>
+          <p>This site is a client-side API explorer and static mirror for your local backend. It attempts to discover endpoints from the root response, render list/detail views for array endpoints, and auto-generate forms for POST/PUT based on returned object keys.</p>
+          <p>Note: For the explorer to call your backend from the browser the backend must allow CORS or the page must be served from the same origin/network.</p>
+        </div>
       </section>
-    </div>
+    </main>
+
+    <footer class="container footer">
+      <div>Made for Shay-21 • Static frontend explorer</div>
+      <div class="muted">Run locally: python3 -m http.server 3000</div>
+    </footer>
 
     <script src="script.js"></script>
   </body>

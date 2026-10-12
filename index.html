@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shay-21 Local Host Mirror</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Repository: Shay-21</p>
+          <h1>Local Host Mirror</h1>
+        </div>
+        <button id="load-root" class="primary-btn">Load API</button>
+      </header>
+
+      <main class="dashboard">
+        <section class="panel status-panel">
+          <h2>Backend Status</h2>
+          <div class="status-row">
+            <span class="label">URL</span>
+            <input id="backend-url" type="text" value="http://192.168.60.103:8080/" />
+          </div>
+          <div class="status-row">
+            <span class="label">Status</span>
+            <span id="status-badge" class="status-badge idle">Waiting</span>
+          </div>
+          <div class="status-row">
+            <span class="label">Response time</span>
+            <span id="response-time">--</span>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Quick Actions</h2>
+          <div class="action-grid">
+            <button class="secondary-btn" data-method="GET" data-endpoint="/">GET /</button>
+            <button class="secondary-btn" data-method="GET" data-endpoint="/api">GET /api</button>
+            <button class="secondary-btn" data-method="GET" data-endpoint="/health">GET /health</button>
+            <button class="secondary-btn" data-method="GET" data-endpoint="/status">GET /status</button>
+          </div>
+        </section>
+
+        <section class="panel request-panel">
+          <h2>Custom Request</h2>
+          <div class="request-controls">
+            <select id="http-method">
+              <option value="GET">GET</option>
+              <option value="POST">POST</option>
+              <option value="PUT">PUT</option>
+              <option value="DELETE">DELETE</option>
+            </select>
+            <input id="endpoint-path" type="text" placeholder="/your-endpoint" value="/" />
+          </div>
+          <textarea id="request-body" placeholder='{"example": true}'></textarea>
+          <button id="send-request" class="primary-btn wide">Send Request</button>
+        </section>
+      </main>
+
+      <section class="panel response-panel">
+        <h2>Response</h2>
+        <pre id="response-output">Waiting for data...</pre>
+      </section>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
